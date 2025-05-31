@@ -91,7 +91,8 @@ app.use((req, res) => {
     res.status(404).render("404", { currentPage: 'error' });
 });
 
-app.listen(3000, () => {
-    console.log('🚀 BlogBahadur server started on http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 BlogCraft server started on port ${PORT}`);
     console.log('📝 Ready to manage your blogs!');
 });
