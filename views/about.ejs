@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - BlogBahadur</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">B</div>
+                <span class="logo-text">BlogBahadur</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">Home</a></li>
+                <li><a href="/about" class="<%= currentPage === 'about' ? 'active' : '' %>">About</a></li>
+                <li><a href="/contact" class="<%= currentPage === 'contact' ? 'active' : '' %>">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="about-page">
+            <h1 class="page-title">About BlogBahadur</h1>
+            <p class="page-subtitle">Simple, modern, and powerful blog management</p>
+            
+            <div class="about-content">
+                <section class="about-section">
+                    <h2 class="section-title"> Our Mission</h2>
+                    <p>BlogBahadur was created with a simple mission: to provide bloggers with a clean, modern, and intuitive platform for creating and managing their content. We believe that great ideas deserve great presentation, and that's exactly what BlogBahadur delivers.</p>
+                </section>
+
+                <section class="about-section">
+                    <h2 class="section-title"> What Makes Us Different</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🎨</div>
+                            <h3>Beautiful Design</h3>
+                            <p>Modern, clean interface that puts your content first. No clutter, no distractions - just pure focus on your writing.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">⚡</div>
+                            <h3>Lightning Fast</h3>
+                            <p>Built with performance in mind. Your blog loads quickly and responds instantly to every interaction.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📱</div>
+                            <h3>Mobile Ready</h3>
+                            <p>Fully responsive design that looks and works perfectly on desktop, tablet, and mobile devices.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🛠️</div>
+                            <h3>Easy to Use</h3>
+                            <p>Intuitive interface that anyone can master. Focus on writing, not on figuring out complex features.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="about-section">
+                    <h2 class="section-title">🛠️ Built With Modern Technology</h2>
+                    <p>BlogBahadur is powered by:</p>
+                    <ul class="tech-list">
+                        <li><strong>Express.js</strong> - Fast, minimalist web framework</li>
+                        <li><strong>EJS</strong> - Powerful templating engine</li>
+                        <li><strong>Modern CSS</strong> - Beautiful, responsive design</li>
+                        <li><strong>Vanilla JavaScript</strong> - Clean, efficient interactions</li>
+                    </ul>
+                </section>
+
+                <section class="about-section">
+                    <h2 class="section-title"> Perfect For</h2>
+                    <div class="use-cases">
+                        <div class="use-case">
+                            <h4>Personal Bloggers</h4>
+                            <p>Share your thoughts, experiences, and stories with the world.</p>
+                        </div>
+                        <div class="use-case">
+                            <h4>Content Creators</h4>
+                            <p>Manage your content pipeline with ease and efficiency.</p>
+                        </div>
+                        <div class="use-case">
+                            <h4>Small Businesses</h4>
+                            <p>Keep your audience engaged with regular, well-organized content.</p>
+                        </div>
+                        <div class="use-case">
+                            <h4>Developers</h4>
+                            <p>A clean, simple platform to share technical knowledge and tutorials.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="about-section">
+                    <h2 class="section-title"> Get Started Today</h2>
+                    <p>Ready to start your blogging journey? Head back to the <a href="/" class="inline-link">home page</a> and create your first blog post. It takes less than a minute to get started!</p>
+                    
+                    <div class="cta-buttons">
+                        <a href="/" class="btn btn-primary">Start Blogging</a>
+                        <a href="/contact" class="btn btn-secondary">Contact Us</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth animations
+            const sections = document.querySelectorAll('.about-section');
+            sections.forEach((section, index) => {
+                section.style.animationDelay = `${index * 0.2}s`;
+                section.style.animation = 'fadeInUp 0.6s ease forwards';
+            });
+        });
+
+        // Add CSS animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

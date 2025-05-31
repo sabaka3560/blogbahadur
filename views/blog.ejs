@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= blog.title %> - BlogBahadur</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">B</div>
+                <span class="logo-text">BlogBahadur</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+            <a href="/" class="breadcrumb-link">🏠 Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-current">Blog Post</span>
+        </nav>
+
+        <!-- Blog Content -->
+        <article class="blog-detail">
+            <header class="blog-header">
+                <h1 class="blog-detail-title"><%= blog.title %></h1>
+                
+                <div class="blog-detail-meta">
+                    <span class="meta-item">📅 Just now</span>
+                    <span class="meta-separator">•</span>
+                    <span class="meta-item">📄 <%= blog.content.split(' ').length %> words</span>
+                    <span class="meta-separator">•</span>
+                    <span class="meta-item">🕒 <%= Math.ceil(blog.content.split(' ').length / 200) %> min read</span>
+                    <span class="meta-separator">•</span>
+                    <span class="meta-item">🆔 #<%= blog.id %></span>
+                </div>
+            </header>
+
+            <div class="blog-detail-content">
+                <% 
+                // Split content by newlines and create paragraphs
+                const paragraphs = blog.content.split('\n\n');
+                paragraphs.forEach(paragraph => { 
+                    if (paragraph.trim()) {
+                %>
+                    <p><%= paragraph.trim() %></p>
+                <% 
+                    }
+                }); 
+                %>
+            </div>
+
+            <footer class="blog-detail-footer">
+                <div class="blog-actions-detail">
+                    <a href="/" class="btn btn-secondary">
+                        ← Back to Home
+                    </a>
+                    <button 
+                        class="btn btn-primary update-btn" 
+                        data-blog-id="<%= blog.id %>"
+                        data-blog-title="<%= blog.title %>"
+                    >
+                        ✏️ Edit Post
+                    </button>
+                    <form action="/delete/<%= blog.id %>" method="POST" class="inline-form">
+                        <button 
+                            type="submit" 
+                            class="btn btn-danger"
+                            onclick="return confirm('Are you sure you want to delete this blog post? This action cannot be undone.')"
+                        >
+                            🗑️ Delete Post
+                        </button>
+                    </form>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle update button clicks
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.update-btn')) {
+                    const button = e.target.closest('.update-btn');
+                    const blogId = button.dataset.blogId;
+                    const currentTitle = button.dataset.blogTitle;
+                    
+                    handleUpdateBlog(blogId, currentTitle);
+                }
+            });
+
+            // Add smooth fade-in animation
+            const article = document.querySelector('.blog-detail');
+            article.style.animation = 'fadeInUp 0.6s ease forwards';
+        });
+
+        function handleUpdateBlog(id, currentTitle) {
+            const newTitle = prompt(`Edit blog title:`, currentTitle);
+            if (newTitle && newTitle.trim() && newTitle !== currentTitle) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/update/${id}`;
+                
+                const titleInput = document.createElement('input');
+                titleInput.type = 'hidden';
+                titleInput.name = 'title';
+                titleInput.value = newTitle.trim();
+                
+                form.appendChild(titleInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        // Add CSS animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

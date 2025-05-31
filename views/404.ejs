@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - BlogBahadur</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">B</div>
+                <span class="logo-text">BlogBahadur</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="error-page">
+            <div class="error-content">
+                <div class="error-icon">🔍</div>
+                <h1 class="error-title">404</h1>
+                <h2 class="error-subtitle">Oops! Page Not Found</h2>
+                <p class="error-message">
+                    The page you're looking for doesn't exist or has been moved. 
+                    Don't worry, it happens to the best of us!
+                </p>
+                
+                <div class="error-suggestions">
+                    <h3>Here's what you can do:</h3>
+                    <ul>
+                        <li>🏠 <a href="/" class="inline-link">Go back to the homepage</a></li>
+                        <li>📝 <a href="/" class="inline-link">Browse our blog posts</a></li>
+                        <li>ℹ️ <a href="/about" class="inline-link">Learn more about BlogBahadur</a></li>
+                        <li>📧 <a href="/contact" class="inline-link">Contact us</a> if you think this is an error</li>
+                    </ul>
+                </div>
+                
+                <div class="error-actions">
+                    <a href="/" class="btn btn-primary">
+                        🏠 Take Me Home
+                    </a>
+                    <button onclick="history.back()" class="btn btn-secondary">
+                        ← Go Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth fade-in animation
+            const errorContent = document.querySelector('.error-content');
+            errorContent.style.animation = 'fadeInUp 0.6s ease forwards';
+        });
+
+        // Add CSS animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

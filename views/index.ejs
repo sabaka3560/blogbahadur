@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogBahadur - Modern Blog Management</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">BB</div>
+                <span class="logo-text">BlogBahadur</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">Home</a></li>
+                <li><a href="/about" class="<%= currentPage === 'about' ? 'active' : '' %>">About</a></li>
+                <li><a href="/contact" class="<%= currentPage === 'contact' ? 'active' : '' %>">Contact</a></li>
+            </ul>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <span class="icon moon-icon">🌙</span>
+                <span class="icon sun-icon">☀️</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h1 class="page-title">My Blog Dashboard</h1>
+        <p class="page-subtitle">Create, manage, and organize your blog posts with ease.</p>
+        
+        <!-- Add New Blog Section -->
+        <section class="add-blog-section">
+            <h2 class="section-title">
+                ✨ Create New Blog Post
+            </h2>
+            <form action="/submit" method="POST">
+                <div class="form-group">
+                    <label for="title" class="form-label">Blog Title</label>
+                    <input 
+                        type="text" 
+                        name="title" 
+                        id="title" 
+                        class="form-input"
+                        placeholder="Enter your blog title..."
+                        required
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="content" class="form-label">Blog Content</label>
+                    <textarea 
+                        name="content" 
+                        id="content" 
+                        class="form-textarea"
+                        placeholder="Write your blog content here..."
+                        rows="6"
+                        required
+                    ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span>📝</span>
+                    Create Blog Post
+                </button>
+            </form>
+        </section>
+
+        <!-- Blog Posts Section -->
+        <section class="blogs-section">
+            <h2 class="section-title">
+                📚 Your Blog Posts
+                <span style="font-size: 0.875rem; font-weight: 400; color: var(--text-muted);">
+                    (<%= blogs && blogs.length ? blogs.length : 0 %> posts)
+                </span>
+            </h2>
+            
+            <div class="blogs-grid">
+                <% if (blogs && blogs.length > 0) { %>
+                    <% blogs.forEach(blog => { %>
+                        <article class="blog-card">
+                            <h3 class="blog-title"><%= blog.title %></h3>
+                            <p class="blog-excerpt">
+                                <%= blog.content.length > 150 ? blog.content.substring(0, 150) + '...' : blog.content %>
+                            </p>
+                            
+                            <div class="blog-meta">
+                                <span>📅 Just now</span>
+                                <span>•</span>
+                                <span>ID: #<%= blog.id %></span>
+                                <span>•</span>
+                                <span><%= blog.content.split(' ').length %> words</span>
+                            </div>
+                            
+                            <div class="blog-actions">
+                                <a href="/blog/<%= blog.id %>" class="btn btn-primary btn-sm">
+                                    👁️ View
+                                </a>
+                                <button 
+                                    class="btn btn-secondary btn-sm update-btn" 
+                                    data-blog-id="<%= blog.id %>"
+                                    data-blog-title="<%= blog.title %>"
+                                >
+                                    ✏️ Edit
+                                </button>
+                                <form action="/delete/<%= blog.id %>" method="POST" class="inline-form">
+                                    <button 
+                                        type="submit" 
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Are you sure you want to delete this blog post?')"
+                                    >
+                                        🗑️ Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </article>
+                    <% }); %>
+                <% } else { %>
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <h3>No blog posts yet</h3>
+                        <p>Start by creating your first blog post using the form above!</p>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme or default to dark
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        // Modern event delegation approach
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load theme first
+            loadTheme();
+            
+            // Handle update button clicks using event delegation
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.update-btn')) {
+                    const button = e.target.closest('.update-btn');
+                    const blogId = button.dataset.blogId;
+                    const currentTitle = button.dataset.blogTitle;
+                    
+                    handleUpdateBlog(blogId, currentTitle);
+                }
+            });
+
+            // Add smooth animations
+            const cards = document.querySelectorAll('.blog-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animation = 'fadeInUp 0.5s ease forwards';
+            });
+        });
+
+        // Separate function for update logic
+        function handleUpdateBlog(id, currentTitle) {
+            const newTitle = prompt(`Edit blog title:`, currentTitle);
+            if (newTitle && newTitle.trim() && newTitle !== currentTitle) {
+                // Create a form and submit programmatically
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/update/${id}`;
+                
+                const titleInput = document.createElement('input');
+                titleInput.type = 'hidden';
+                titleInput.name = 'title';
+                titleInput.value = newTitle.trim();
+                
+                form.appendChild(titleInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        // Add CSS animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
